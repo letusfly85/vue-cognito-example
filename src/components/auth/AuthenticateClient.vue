@@ -5,6 +5,7 @@ import {
   AuthenticationDetails,
   CognitoUserAttribute
 } from 'amazon-cognito-identity-js'
+import { CognitoIdentityServiceProvider } from 'aws-sdk'
 
 export default {
   name: 'AuthenticateClient',
@@ -22,6 +23,25 @@ export default {
     }
 
     this.configure(config)
+  },
+  changePassword: function (email, oldPassword, newPassword, success, failure) {
+    new CognitoIdentityServiceProvider.CognitoUser({
+      Username: email,
+      Pool: this.userPool
+    }).changePassword(oldPassword, newPassword, function (err, result) {
+      return err ? failure(err) : success(result.user())
+    })
+  },
+  resetPassword: function (username, resetCode, newPassword) {
+    if (this.userPool === undefined) {
+      console.log('preparing user pool')
+      this.prepare()
+    }
+    const userData = { Username: username, Pool: this.userPool }
+    const cognitoUser = new CognitoUser(userData)
+    let result = cognitoUser.confirmPassword(resetCode, newPassword, this)
+    console.log(result)
+    return result
   },
   configure: function (config) {
     if (config.userPool) {

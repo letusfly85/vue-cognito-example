@@ -25,6 +25,10 @@ export default {
       let result = Auth.signIn('test@gmail.com', 'testtest')
       console.log(result)
     },
+    resetPassword: function () {
+      console.log('reset password....')
+      Auth.resetPassword('Sample', 'xxxxxxx', 'testtest')
+    },
     isAuthenticated: function () {
       console.log('check authenticated..?....')
       let result = Auth.isAuthenticated()
@@ -33,6 +37,3 @@ export default {
   }
 }
 </script>
-
-<style scoped>
-</style>
