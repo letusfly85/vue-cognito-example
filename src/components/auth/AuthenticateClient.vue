@@ -95,6 +95,10 @@ export default {
     })
   },
   isAuthenticated: function () {
+    if (this.userPool === undefined) {
+      console.log('preparing user pool')
+      this.prepare()
+    }
     const cognitoUser = this.userPool.getCurrentUser()
     return new Promise((resolve, reject) => {
       if (cognitoUser === null) {
